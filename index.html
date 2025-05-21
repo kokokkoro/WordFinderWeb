@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordFinder</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Заменяем заголовок -->
+	<h1>WordFinder<span class="kz">kz</span></h1>
+        
+        <div class="control-panel">
+            <div class="form-group">
+                <label for="wordLength">Количество букв:</label>
+                <input type="number" id="wordLength" min="2" max="20" value="6">
+            </div>
+            
+            <div class="form-group">
+                <label>Известные буквы (введите известные, остальные оставьте пустыми):</label>
+                <div id="knownLettersContainer" class="letters-grid"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="requiredLetters">Обязательные буквы (без пробелов):</label>
+                <input type="text" id="requiredLetters" placeholder="например: абв">
+            </div>
+            
+            <div class="form-group">
+                <label for="excludedLetters">Исключённые буквы (без пробелов):</label>
+                <input type="text" id="excludedLetters" placeholder="например: йц">
+            </div>
+            
+            <button id="findButton">Найти</button>
+        </div>
+        
+        <div id="results">
+            <h2>Результаты:</h2>
+            <div id="wordsList"></div>
+        </div>
+    </div>
+
+    <!-- Сначала подключаем файл с словами -->
+    <script src="words.js"></script>
+    <!-- Затем наш основной скрипт -->
+    <script src="script.js"></script>
+</body>
+</html>

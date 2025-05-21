@@ -1,0 +1,142 @@
+/* Обновляем стили для заголовка */
+.container h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 3.5em;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.container h1 .kz {
+    position: relative;
+    font-size: 0.5em;
+    bottom: -0.5em;
+    color: #3498db;
+    text-shadow: none;
+}
+
+/* Общий фон и анимации */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    animation: gradientBG 15s ease infinite;
+    background-size: 400% 400%;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Стили для кнопки */
+button {
+    background: linear-gradient(to right, #3498db, #2c3e50);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(to right, #2c3e50, #3498db);
+}
+
+/* Стили для полей ввода */
+input[type="number"], input[type="text"], .letter-input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border 0.3s ease;
+    font-size: 16px;
+}
+
+.letters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    gap: 3px;
+    margin-top: 5px;
+}
+
+.letter-input {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-transform: lowercase;
+    padding: 0;
+    margin: 0;
+}
+
+.letter-input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 1px rgba(52, 152, 219, 0.5);
+}
+
+/* Для мобильных устройств можно сделать ещё меньше */
+@media (max-width: 480px) {
+    .letters-grid {
+        grid-template-columns: repeat(auto-fill, minmax(28px, 1fr));
+        gap: 2px;
+    }
+    
+    .letter-input {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+}
+
+input[type="number"]:focus, 
+input[type="text"]:focus, 
+.letter-input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Анимация появления результатов */
+#results {
+    background-color: rgba(236, 240, 241, 0.7);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
