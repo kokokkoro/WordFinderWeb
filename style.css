@@ -1,142 +1,192 @@
-/* Обновляем стили для заголовка */
-.container h1 {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 30px;
-    font-size: 3.5em;
-    font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    position: relative;
-    display: inline-block;
-    width: 100%;
-}
-
-.container h1 .kz {
-    position: relative;
-    font-size: 0.5em;
-    bottom: -0.5em;
-    color: #3498db;
-    text-shadow: none;
-}
-
-/* Общий фон и анимации */
 body {
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background-color: #f4f4f4;
+    color: #333;
     margin: 0;
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Выравнивание по верху, если контент длинный */
     min-height: 100vh;
-    animation: gradientBG 15s ease infinite;
-    background-size: 400% 400%;
-}
-
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
 }
 
 .container {
-    max-width: 800px;
-    margin: 20px auto;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-/* Стили для кнопки */
-button {
-    background: linear-gradient(to right, #3498db, #2c3e50);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: block;
+    background-color: #fff;
+    padding: 25px 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     width: 100%;
-    margin-top: 20px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 700px; /* Максимальная ширина контейнера */
 }
 
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(to right, #2c3e50, #3498db);
-}
-
-/* Стили для полей ввода */
-input[type="number"], input[type="text"], .letter-input {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    box-sizing: border-box;
-    transition: border 0.3s ease;
-    font-size: 16px;
-}
-
-.letters-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
-    gap: 3px;
-    margin-top: 5px;
-}
-
-.letter-input {
-    width: 30px;
-    height: 30px;
+h1 {
+    font-family: 'Lobster', cursive;
     text-align: center;
-    font-size: 16px;
+    font-size: 3em; /* Убедитесь, что размер шрифта тот, который вам нравится */
+    margin-bottom: 15px; /* Возможно, вы уменьшали этот отступ, когда добавляли подпись. Отрегулируйте при необходимости. */
+    /* или margin-bottom: -10px; если подпись была .signature { margin-top: -10px; margin-bottom: 25px;} */
+
+
+    /* --- Градиентный текст --- */
+    /* Фоллбэк (резервный цвет) для старых браузеров */
+    color: #8A2BE2; /* Фиолетовый, как начало градиента */
+
+    /* Сам градиент от фиолетового (BlueViolet) к темно-сине-серому (оригинальный цвет заголовка) */
+    background-image: linear-gradient(to right, #9b59b6, #3498db);
+    /* Если хотите более чистый темно-синий в конце: */
+    /* background-image: linear-gradient(to right, #8A2BE2, #00008B); */ /* От BlueViolet к DarkBlue */
+    /* Или более яркий вариант: */
+    /* background-image: linear-gradient(to right, #9b59b6, #3498db); */ /* Фиолетовый к синему */
+
+
+    padding-bottom: 5px; /* Небольшой отступ снизу, чтобы градиент не обрезался у букв с нижними выносными элементами */
+
+    -webkit-background-clip: text;  /* Chrome, Safari, Edge */
+    -moz-background-clip: text;     /* Firefox */
+    background-clip: text;
+
+    /* Делаем сам цвет текста прозрачным, чтобы был виден фон (градиент) */
+    -webkit-text-fill-color: transparent; /* Chrome, Safari, Edge */
+    -moz-text-fill-color: transparent;    /* Firefox */
+    color: transparent; /* Стандартное свойство, но text-fill-color приоритетнее для некоторых браузеров */
+}
+
+.panel {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.panel label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 22px); /* Учитываем padding и border */
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box; /* Важно для правильного расчета ширины */
+    font-size: 1em;
+}
+
+#positionalInputsContainer {
+    display: flex;
+    gap: 5px; /* Расстояние между ячейками */
+    flex-wrap: wrap; /* Перенос на новую строку, если не помещаются */
+}
+
+/* Стили для каждой отдельной ячейки позиционной буквы */
+input.positional-input { /* ИЗМЕНЕНИЕ ЗДЕСЬ: добавлен 'input' перед классом */
+    width: 30px;          /* Ширина ячейки */
+    height: 30px;         /* Высота ячейки */
+    min-width: 30px;      /* Гарантируем, что ширина не будет меньше из-за flex-свойств */
+    padding: 0;           /* Убираем внутренние отступы, которые есть у общих input */
+    text-align: center;
+    font-size: 1.1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Важно для корректного расчета размера */
     text-transform: lowercase;
-    padding: 0;
-    margin: 0;
+
+    /* Свойства для flex-элементов, чтобы они вели себя предсказуемо в контейнере */
+    flex-grow: 0;         /* Не растягиваться */
+    flex-shrink: 0;       /* Не сжиматься (если не нужно) */
+    flex-basis: 30px;     /* Базовый размер */
 }
 
-.letter-input:focus {
-    border-color: #3498db;
-    outline: none;
-    box-shadow: 0 0 0 1px rgba(52, 152, 219, 0.5);
-}
-
-/* Для мобильных устройств можно сделать ещё меньше */
-@media (max-width: 480px) {
-    .letters-grid {
-        grid-template-columns: repeat(auto-fill, minmax(28px, 1fr));
-        gap: 2px;
-    }
-    
-    .letter-input {
-        width: 28px;
-        height: 28px;
-        font-size: 14px;
-    }
-}
-
-input[type="number"]:focus, 
-input[type="text"]:focus, 
-.letter-input:focus {
-    border-color: #3498db;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-}
-
-/* Анимация появления результатов */
-#results {
-    background-color: rgba(236, 240, 241, 0.7);
-    padding: 20px;
-    border-radius: 8px;
+button#findButton {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
     margin-top: 20px;
-    animation: fadeIn 0.5s ease-out;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+button#findButton:hover {
+    background-color: #2980b9;
+}
+
+#resultsPanel {
+    margin-top: 30px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+#resultsPanel h2 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.5em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+#resultsCount {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+#resultsList {
+    max-height: 300px; /* Ограничение высоты списка слов */
+    overflow-y: auto; /* Добавление прокрутки, если слов много */
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    line-height: 1.6; /* Межстрочный интервал для лучшей читаемости */
+}
+
+#resultsList div { /* Стиль для каждого слова в списке */
+    padding: 3px 0;
+}
+
+/* Стили для "kz" рядом с заголовком */
+.country-code {
+    font-size: 0.4em;
+    font-weight: normal;
+    vertical-align: super;
+    margin-left: 5px;
+    font-family: 'Roboto', sans-serif;
+    text-transform: lowercase;
+
+    /* --- Гарантируем, что "kz" останется без изменений --- */
+    color: #555; /* Его собственный цвет */
+    -webkit-text-fill-color: #555; /* Явно указываем цвет заливки для WebKit */
+    -moz-text-fill-color: #555;    /* Явно указываем цвет заливки для Mozilla */
+
+    /* Сбрасываем свойства, связанные с градиентом, на всякий случай */
+    background-image: none;
+    -webkit-background-clip: initial; /* 'initial' сбрасывает на значение по умолчанию */
+    -moz-background-clip: initial;
+    background-clip: initial;
+}
+
+/* Стили для подписи */
+.signature {
+    text-align: center;     /* Выравнивание по центру оставляем */
+    margin-top: -10px;      /* Немного подтягиваем вверх, ближе к заголовку h1.
+                               Заголовок h1 имеет свой нижний отступ (margin-bottom),
+                               и отрицательный margin-top для подписи позволит ей
+                               частично "заехать" в это пространство.
+                               Можете поэкспериментировать с этим значением (например, -15px или -5px). */
+    margin-bottom: 25px;    /* Отступ снизу, перед первым блоком с настройками.
+                               Это создаст достаточное пространство. */
+    font-size: 0.85em;      /* Можно сделать шрифт еще чуть меньше, если он под заголовком */
+    color: #888;           /* Можно сделать цвет еще чуть светлее */
 }
