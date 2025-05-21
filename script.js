@@ -1,113 +1,137 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Проверяем, что массив words существует
-    if (typeof words === 'undefined') {
-        console.error('Массив words не найден! Проверьте подключение words.js');
-        alert('Ошибка: словарь не загружен. Проверьте файл words.js');
+document.addEventListener('DOMContentLoaded', () => {
+    // Проверяем, загружен ли массив words
+    if (typeof words === 'undefined' || !Array.isArray(words)) {
+        console.error("Массив 'words' не найден или не является массивом. Убедитесь, что файл words.js подключен и содержит 'const words = [...]';");
+        alert("Ошибка: Список слов не загружен. Проверьте консоль разработчика (F12) для деталей.");
         return;
     }
 
-    // Элементы интерфейса
     const wordLengthInput = document.getElementById('wordLength');
-    const knownLettersContainer = document.getElementById('knownLettersContainer');
+    const positionalInputsContainer = document.getElementById('positionalInputsContainer');
     const requiredLettersInput = document.getElementById('requiredLetters');
     const excludedLettersInput = document.getElementById('excludedLetters');
     const findButton = document.getElementById('findButton');
-    const wordsList = document.getElementById('wordsList');
-    
-    // Проверяем, что все элементы существуют
-    if (!wordLengthInput || !knownLettersContainer || !requiredLettersInput || 
-        !excludedLettersInput || !findButton || !wordsList) {
-        console.error('Не найдены необходимые элементы DOM');
-        return;
-    }
-    
-    // Создаём ячейки для букв
-    function createLetterInputs() {
-        knownLettersContainer.innerHTML = '';
-        const length = parseInt(wordLengthInput.value) || 6;
-        
-        for (let i = 0; i < length; i++) {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.maxLength = 1;
-            input.className = 'letter-input';
-            input.dataset.position = i;
-            input.placeholder = '?';
-            knownLettersContainer.appendChild(input);
-        }
-    }
-    
-    // Инициализация
-    createLetterInputs();
-    wordLengthInput.addEventListener('change', createLetterInputs);
-    
-    // Функция поиска слов
-    function findWords() {
-        const length = parseInt(wordLengthInput.value) || 6;
-        const requiredLetters = (requiredLettersInput.value || '').toLowerCase().replace(/[^а-яё]/g, '');
-        const excludedLetters = (excludedLettersInput.value || '').toLowerCase().replace(/[^а-яё]/g, '');
-        
-        // Получаем известные буквы
-        const knownLetters = {};
-        document.querySelectorAll('.letter-input').forEach(input => {
-            const letter = input.value.trim().toLowerCase();
-            if (letter) {
-                knownLetters[parseInt(input.dataset.position)] = letter;
+    const resultsCountDiv = document.getElementById('resultsCount');
+    const resultsListDiv = document.getElementById('resultsList');
+
+    // Функция для генерации полей ввода для позиционных букв
+    // Обновленная функция для генерации полей ввода для позиционных букв
+    function generatePositionalInputs(length) {
+    positionalInputsContainer.innerHTML = ''; // Очищаем предыдущие поля
+    const inputs = []; // Массив для хранения ссылок на созданные поля ввода
+
+    for (let i = 0; i < length; i++) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.maxLength = 1;
+        input.classList.add('positional-input');
+        input.dataset.index = i; // Сохраняем индекс
+
+        positionalInputsContainer.appendChild(input);
+        inputs.push(input); // Добавляем созданное поле в наш массив
+
+        // Слушатель события 'input': когда пользователь вводит символ
+        input.addEventListener('input', function() {
+            // this - текущее поле ввода, в котором произошло событие
+            if (this.value.length === this.maxLength) { // Если поле заполнено (введена 1 буква)
+                const currentIndex = parseInt(this.dataset.index, 10);
+                if (currentIndex < inputs.length - 1) { // Если это не последнее поле
+                    inputs[currentIndex + 1].focus(); // Перемещаем фокус на следующее поле
+                }
             }
         });
+
+        // Слушатель события 'keydown': для обработки Backspace
+        input.addEventListener('keydown', function(event) {
+            // event.key === 'Backspace' - была нажата клавиша Backspace
+            // this.value.length === 0 - и поле ввода при этом уже пустое
+            if (event.key === 'Backspace' && this.value.length === 0) {
+                const currentIndex = parseInt(this.dataset.index, 10);
+                if (currentIndex > 0) { // Если это не первое поле
+                    inputs[currentIndex - 1].focus(); // Перемещаем фокус на предыдущее поле
+                }
+            }
+        });
+    }
+}
+
+    // Инициализация полей при загрузке страницы
+    generatePositionalInputs(parseInt(wordLengthInput.value, 10));
+
+    // Обновление полей при изменении длины слова
+    wordLengthInput.addEventListener('change', () => {
+        let length = parseInt(wordLengthInput.value, 10);
+        if (length < 2) length = 2;
+        if (length > 20) length = 20;
+        wordLengthInput.value = length; // Корректируем значение в поле, если оно вышло за пределы
+        generatePositionalInputs(length);
+    });
+
+    // Обработчик нажатия на кнопку "Найти"
+    findButton.addEventListener('click', () => {
+        const length = parseInt(wordLengthInput.value, 10);
         
+        // ... внутри findButton.addEventListener('click', () => { ...
+    const positionalLetters = [];
+    document.querySelectorAll('.positional-input').forEach(input => {
+        let letterValue = input.value.toLowerCase();
+        if (letterValue === ' ') { // Если введен пробел
+            letterValue = '';      // Считаем его как пустую строку (любая буква)
+        }
+        positionalLetters[parseInt(input.dataset.index, 10)] = letterValue;
+    });
+// ... остальная часть функции
+
+        const requiredLetters = requiredLettersInput.value.toLowerCase().split('').filter(l => l.trim() !== '');
+        const excludedLetters = excludedLettersInput.value.toLowerCase().split('').filter(l => l.trim() !== '');
+
         // Фильтрация слов
-        const matchedWords = words.filter(word => {
-            if (word.length !== length) return false;
-            
-            for (const [position, letter] of Object.entries(knownLetters)) {
-                if (word[position] !== letter) return false;
+        const foundWords = words.filter(word => {
+            const lowerWord = word.toLowerCase(); // Работаем с нижним регистром
+
+            // 1. Проверка длины
+            if (lowerWord.length !== length) {
+                return false;
             }
-            
-            for (const letter of requiredLetters) {
-                if (!word.includes(letter)) return false;
+
+            // 2. Проверка по позиционным буквам
+            for (let i = 0; i < length; i++) {
+                if (positionalLetters[i] && positionalLetters[i] !== '_' && positionalLetters[i] !== '') {
+                    if (lowerWord[i] !== positionalLetters[i]) {
+                        return false;
+                    }
+                }
             }
-            
-            for (const letter of excludedLetters) {
-                if (word.includes(letter)) return false;
+
+            // 3. Проверка обязательных букв
+            for (const reqLetter of requiredLetters) {
+                if (!lowerWord.includes(reqLetter)) {
+                    return false;
+                }
             }
-            
-            return true;
+
+            // 4. Проверка букв-исключений
+            for (const exLetter of excludedLetters) {
+                if (lowerWord.includes(exLetter)) {
+                    return false;
+                }
+            }
+
+            return true; // Слово подходит по всем критериям
         });
-        
-        displayResults(matchedWords);
-    }
-    
-    // Вывод результатов
-    function displayResults(matchedWords) {
-        wordsList.innerHTML = '';
-        
-        if (matchedWords.length === 0) {
-            wordsList.innerHTML = '<p>Слова не найдены</p>';
-            return;
-        }
-        
-        const countElement = document.createElement('h3');
-        countElement.textContent = `Найдено слов: ${matchedWords.length}`;
-        wordsList.appendChild(countElement);
-        
-        matchedWords.forEach(word => {
-            const wordElement = document.createElement('div');
-            wordElement.className = 'word-item';
-            wordElement.textContent = word;
-            wordsList.appendChild(wordElement);
-        });
-    }
-    
-    findButton.addEventListener('click', findWords);
-    
-    // Автопереход между полями
-    knownLettersContainer.addEventListener('input', function(e) {
-        if (e.target.matches('.letter-input') && e.target.value) {
-            const next = e.target.nextElementSibling;
-            if (next && next.matches('.letter-input')) {
-                next.focus();
-            }
+
+        // Отображение результатов
+        resultsCountDiv.textContent = `Найдено слов: ${foundWords.length}`;
+        resultsListDiv.innerHTML = ''; // Очищаем предыдущие результаты
+
+        if (foundWords.length > 0) {
+            foundWords.forEach(word => {
+                const wordDiv = document.createElement('div');
+                wordDiv.textContent = word;
+                resultsListDiv.appendChild(wordDiv);
+            });
+        } else {
+            resultsListDiv.textContent = 'Подходящих слов не найдено.';
         }
     });
 });
